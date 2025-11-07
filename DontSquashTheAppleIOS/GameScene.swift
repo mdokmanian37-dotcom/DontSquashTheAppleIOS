@@ -13,11 +13,16 @@ let bottomB = SKSpriteNode(color: .green, size: CGSize(width: 1334, height: 20))
 let livesNode = SKLabelNode(text: "lives: 3")
 var lives = 3
 var score = 0
-
+let backButton = SKLabelNode(text: "Quit")
+let resetButton = SKLabelNode(text: "Restart")
 class GameScene: SKScene,
     SKPhysicsContactDelegate {
         
         override func didMove(to view: SKView) {
+            resetButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
+            resetButton.fontName = "PressStart2P"
+            resetButton.alpha = 0
+            addChild(resetButton)
             
             livesNode.position = CGPoint(x: frame.midX, y: frame.midY)
             livesNode.fontName = "PressStart2P"
@@ -25,6 +30,10 @@ class GameScene: SKScene,
             
             addChild(livesNode)
             
+            backButton.fontName = "PressStart2P"
+            backButton.fontSize = 32
+            backButton.position = CGPoint(x: frame.minX + 100, y: frame.maxY - 150)
+            addChild(backButton)
             
             apple.physicsBody = SKPhysicsBody(circleOfRadius: 30)
             apple.size = CGSize(width: 60, height: 60)
@@ -80,9 +89,35 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             if location.x < 667{
                 apple.physicsBody?.velocity = CGVector(dx: -350, dy: 0)
             }
+            if resetButton.contains(location){
+                if resetButton.alpha == 1{
+                    reset()
+                }
+            }
+            if backButton.contains(location){
+                let gameScene = MainMenuScene(size: self.size)
+                gameScene.scaleMode = .aspectFill
+                self.view?.presentScene(gameScene, transition: .doorsCloseHorizontal(withDuration: 0.5))
+                livesNode.removeFromParent()
+                backButton.removeFromParent()
+                apple.removeFromParent()
+                bottomB.removeFromParent()
+                resetButton.removeFromParent()
+                reset()
+                
+            }
         }
-
     
+
+    }
+    func reset(){
+        lives = 3
+        apple.texture = SKTexture(imageNamed: "apple")
+        livesNode.text = "lives: \(lives)"
+        score = 0
+        apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
+        resetButton.alpha = 0
+
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         apple.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
@@ -107,6 +142,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 livesNode.text = "Last life!"
             }else if lives < 0{
                 livesNode.text = "GAME OVER"
+                resetButton.alpha = 1
             }
             if contact.bodyA.categoryBitMask == 2 && contact.bodyB.categoryBitMask == 8 {
                 // lose and crushed apple
@@ -127,6 +163,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                     livesNode.text = "Last life!"
                 }else if lives < 0{
                     livesNode.text = "GAME OVER"
+                    resetButton.alpha = 1
                 }
                 
                 
