@@ -8,13 +8,17 @@
 import SpriteKit
 import GameplayKit
 
-var apple = SKSpriteNode(imageNamed: "apple")
+var apple = SKSpriteNode(imageNamed: "")
 let bottomB = SKSpriteNode(color: .green, size: CGSize(width: 1334, height: 20))
 let livesNode = SKLabelNode(text: "lives: 3")
 var lives = 3
 var score = 0
 let backButton = SKLabelNode(text: "Quit")
 let resetButton = SKLabelNode(text: "Restart")
+var firstP = ""
+var secondP = ""
+var thirdP = ""
+var fourthP = ""
 class GameScene: SKScene,
     SKPhysicsContactDelegate {
         
@@ -35,15 +39,17 @@ class GameScene: SKScene,
             backButton.position = CGPoint(x: frame.minX + 100, y: frame.maxY - 150)
             addChild(backButton)
             
-            apple.physicsBody = SKPhysicsBody(circleOfRadius: 30)
-            apple.size = CGSize(width: 60, height: 60)
-            apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
-            apple.physicsBody?.restitution = 0
-            apple.physicsBody?.categoryBitMask = 2
-            apple.physicsBody?.contactTestBitMask = 8
+            makeApple()
             
-            
-            addChild(apple)
+//            apple.physicsBody = SKPhysicsBody(circleOfRadius: 30)
+//            apple.size = CGSize(width: 60, height: 60)
+//            apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
+//            apple.physicsBody?.restitution = 0
+//            apple.physicsBody?.categoryBitMask = 2
+//            apple.physicsBody?.contactTestBitMask = 8
+//            
+//            
+//            addChild(apple)
             
             bottomB.physicsBody = SKPhysicsBody(rectangleOf: bottomB.size)
             bottomB.position = CGPoint(x: frame.midX, y: frame.minY + 75)
@@ -78,6 +84,32 @@ class GameScene: SKScene,
         boulder.physicsBody?.contactTestBitMask = 2 | 4
         
         addChild(boulder)
+        
+    }
+    func makeApple(){
+        print(SettingsManager.shared.choice)
+        apple.physicsBody = SKPhysicsBody(circleOfRadius: 30)
+        apple.size = CGSize(width: 60, height: 60)
+        apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
+        apple.physicsBody?.restitution = 0
+        apple.physicsBody?.categoryBitMask = 2
+        apple.physicsBody?.contactTestBitMask = 8
+        
+        
+        addChild(apple)
+        
+        if (SettingsManager.shared.choice == 1){
+            firstP = "apple"
+            secondP = "apple2nd"
+            thirdP = "apple3rd"
+            fourthP = "apple4th"
+        }else if (SettingsManager.shared.choice == 2){
+            firstP = "pumpkin"
+            secondP = "pumpkin2nd"
+            thirdP = "pumpkin3rd"
+            fourthP = "pumpkin4th"
+        }
+        apple.texture = SKTexture(imageNamed: firstP)
     }
 override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
@@ -112,11 +144,12 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
     func reset(){
         lives = 3
-        apple.texture = SKTexture(imageNamed: "apple")
+        apple.texture = SKTexture(imageNamed: firstP)
         livesNode.text = "lives: \(lives)"
         score = 0
         apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
         resetButton.alpha = 0
+        apple.size = CGSize(width: 60, height: 60)
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -133,14 +166,19 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             }
             
             if lives == 2{
-                apple.texture = SKTexture(imageNamed: "apple2nd")
+                apple.texture = SKTexture(imageNamed: secondP)
             }else if lives == 1{
-                apple.texture = SKTexture(imageNamed: "apple3rd")
+                apple.texture = SKTexture(imageNamed: thirdP)
+                apple.size = CGSize(width: 70, height: 60)
+                
             }else if lives == 0{
-                // play animation
-                apple.texture = SKTexture(imageNamed: "apple4th")
+                apple.size = CGSize(width: 80, height: 60)
+                //figure out how to make oval
+               
+                apple.texture = SKTexture(imageNamed: fourthP)
                 livesNode.text = "Last life!"
             }else if lives < 0{
+                // play animation
                 livesNode.text = "GAME OVER"
                 resetButton.alpha = 1
             }
@@ -154,12 +192,12 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 }
                 
                 if lives == 2{
-                    apple.texture = SKTexture(imageNamed: "apple2nd")
+                    apple.texture = SKTexture(imageNamed: secondP)
                 }else if lives == 1{
-                    apple.texture = SKTexture(imageNamed: "apple3rd")
+                    apple.texture = SKTexture(imageNamed: thirdP)
                 }else if lives == 0{
                     // play animation
-                    apple.texture = SKTexture(imageNamed: "apple4th")
+                    apple.texture = SKTexture(imageNamed: fourthP)
                     livesNode.text = "Last life!"
                 }else if lives < 0{
                     livesNode.text = "GAME OVER"
