@@ -106,8 +106,8 @@ class GameScene: SKScene,
         }else if (SettingsManager.shared.choice == 2){
             firstP = "pumpkin"
             secondP = "pumpkin2nd"
-            thirdP = "pumpkin3rd"
-            fourthP = "pumpkin4th"
+//            thirdP = "pumpkin3rd"
+//            fourthP = "pumpkin4th"
         }
         apple.texture = SKTexture(imageNamed: firstP)
     }

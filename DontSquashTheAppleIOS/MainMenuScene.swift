@@ -12,6 +12,7 @@ class MainMenuScene: SKScene {
     let title = SKLabelNode(text: "Don't Squash The Apple!")
     let playButton = SKLabelNode(text: "New Game")
     let settingsButton = SKLabelNode(text: "Customize")
+    let creditsButton = SKLabelNode(text: "Credits")
 
     override func didMove(to view: SKView) {
         title.fontName = "PressStartP2"
@@ -28,6 +29,11 @@ class MainMenuScene: SKScene {
         settingsButton.fontName = "PressStartP2"
         settingsButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
         addChild(settingsButton)
+        
+        creditsButton.fontName = "PressStartP2"
+        creditsButton.fontSize = 40
+        creditsButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
+        addChild(creditsButton)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             for touch in touches {
@@ -41,6 +47,11 @@ class MainMenuScene: SKScene {
                 }
                 if settingsButton.contains(location){
                     let gameScene = SettingsScene(size: self.size)
+                    gameScene.scaleMode = .aspectFill
+                    self.view?.presentScene(gameScene, transition: .doorsOpenVertical(withDuration: 0.5))
+                }
+                if creditsButton.contains(location){
+                    let gameScene = CreditsScene(size: self.size)
                     gameScene.scaleMode = .aspectFill
                     self.view?.presentScene(gameScene, transition: .doorsOpenVertical(withDuration: 0.5))
                 }
