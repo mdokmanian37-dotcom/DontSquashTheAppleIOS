@@ -64,11 +64,8 @@ class GameScene: SKScene,
             
             
             
-            
             run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {self.makeBoulder(pos: CGPoint(x: apple.position.x - Double.random(in: -100...100), y: Double.random(in: 400...450)))
             }])))
-            
-            
             
             
             

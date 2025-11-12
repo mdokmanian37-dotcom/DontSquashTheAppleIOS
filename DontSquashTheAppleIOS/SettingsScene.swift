@@ -13,6 +13,10 @@ class SettingsScene: SKScene {
     let topText = SKLabelNode(text: "Customization Center")
     let chooseApple = SKSpriteNode(imageNamed: "apple")
     let choosePump = SKSpriteNode(imageNamed: "pumpkin")
+    let appleSignal = SKLabelNode(text: "You chose the Apple")
+    let pumpSignal = SKLabelNode(text: "You chose the Pumpkin")
+    var appleLock = 0
+    var pumpLock = 0
     
     override func didMove(to view: SKView) {
         
@@ -33,6 +37,18 @@ class SettingsScene: SKScene {
         choosePump.position = CGPoint(x: frame.midX + 100, y: frame.midY)
         choosePump.size = CGSize(width: 150, height: 150)
         addChild(choosePump)
+        
+        appleSignal.position = CGPoint(x: chooseApple.position.x, y: frame.midY + 75)
+        appleSignal.fontName = "PressStart2P"
+        appleSignal.fontSize = 25
+        appleSignal.alpha = 0
+        addChild(appleSignal)
+        
+        pumpSignal.position = CGPoint(x: choosePump.position.x, y: frame.midY + 75)
+        pumpSignal.fontName = "PressStart2P"
+        pumpSignal.fontSize = 25
+        pumpSignal.alpha = 0
+        addChild(pumpSignal)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
@@ -47,13 +63,35 @@ class SettingsScene: SKScene {
             }
             if chooseApple.contains(location){
 //                pick the apple
-                SettingsManager.shared.choice = 1
-                print(SettingsManager.shared.choice)
+                if appleLock == 0{
+                    SettingsManager.shared.choice = 1
+                    print(SettingsManager.shared.choice)
+                    appleSignal.alpha = 1
+                    appleLock = 1
+                    apple.position.y += 20
+                    run(SKAction.sequence([SKAction.wait(forDuration: 2),SKAction.run {
+                        self.appleSignal.alpha = 0
+                        self.appleLock = 0
+                        self.appleSignal.position.y -= 20
+                    }]))
+                }
             }
             if choosePump.contains(location){
                 // pick the pumpkin
-                SettingsManager.shared.choice = 2
-                print(SettingsManager.shared.choice)
+                if pumpLock == 0{
+                    SettingsManager.shared.choice = 2
+                    print(SettingsManager.shared.choice)
+                    pumpSignal.alpha = 1
+                    pumpLock = 1
+                    pumpSignal.position.y += 20
+                    run(SKAction.sequence([SKAction.wait(forDuration: 2),SKAction.run {
+                        self.pumpSignal.alpha = 0
+                        self.pumpLock = 0
+                        self.pumpSignal.position.y -= 20
+                    }]))
+                }
+                
+                
             }
             
         }
