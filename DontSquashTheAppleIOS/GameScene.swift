@@ -71,14 +71,23 @@ class GameScene: SKScene,
             
             
             
-            run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {self.makeBoulder(pos: CGPoint(x: apple.position.x - Double.random(in: -100...100), y: Double.random(in: 400...450)))
+            
+            run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {
+                if lives >= 0 {self.makeBoulder(pos: CGPoint(x: apple.position.x - Double.random(in: -150...150), y: 640))}
             }])))
-            
-            
             
             self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
             self.physicsWorld.contactDelegate = self
         }
+    override func update(_ currentTime: TimeInterval) {
+//        if lives >= 0 {
+//            run(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run{
+//                self.makeBoulder(pos: CGPoint(x: apple.position.x - Double.random(in: -150...150), y: 640))
+//            }]))
+//        }else{
+//            print("no rock")
+//        }
+    }
     func makeBoulder(pos:CGPoint){
         let boulder = SKSpriteNode(imageNamed: "boulder")
         boulder.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 87.5, height: 87.5))
@@ -119,10 +128,10 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
             print("touch \(location)")
-            if location.x > 667{
+            if location.x > frame.midX{
                 apple.physicsBody?.velocity = CGVector(dx: 350, dy: 0)
             }
-            if location.x < 667{
+            if location.x < frame.midX{
                 apple.physicsBody?.velocity = CGVector(dx: -350, dy: 0)
             }
             if resetButton.contains(location){
@@ -219,11 +228,13 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             print("Hit")
             contact.bodyA.node?.removeFromParent()
             score += 1
+            scoreNode.text = "Score: \(score)"
         }
         if contact.bodyA.categoryBitMask == 4 && contact.bodyB.categoryBitMask == 8 {
             print("Hit")
             contact.bodyB.node?.removeFromParent()
             score += 1
+            scoreNode.text = "Score: \(score)"
         }
     }
 }
