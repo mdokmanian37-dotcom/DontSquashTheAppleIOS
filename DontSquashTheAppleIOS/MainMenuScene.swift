@@ -10,7 +10,7 @@ import GameplayKit
 
 class MainMenuScene: SKScene {
     let title = SKLabelNode(text: "Don't Squash The Apple!")
-    let playButton = SKLabelNode(text: "New Game")
+    let playButton = SKLabelNode(text: "Play Game")
     let settingsButton = SKLabelNode(text: "Customize")
     let creditsButton = SKLabelNode(text: "Credits")
 

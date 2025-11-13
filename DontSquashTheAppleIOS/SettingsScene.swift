@@ -68,11 +68,14 @@ class SettingsScene: SKScene {
                     print(SettingsManager.shared.choice)
                     appleSignal.alpha = 1
                     appleLock = 1
-                    apple.position.y += 20
+                    appleSignal.run(SKAction.fadeAlpha(to: 0, duration: 2))
+                    appleSignal.run(SKAction.moveBy(x: 0, y: 30, duration: 2))
+                    
                     run(SKAction.sequence([SKAction.wait(forDuration: 2),SKAction.run {
                         self.appleSignal.alpha = 0
                         self.appleLock = 0
-                        self.appleSignal.position.y -= 20
+                        self.appleSignal.position.y -= 30
+                       
                     }]))
                 }
             }
@@ -83,11 +86,12 @@ class SettingsScene: SKScene {
                     print(SettingsManager.shared.choice)
                     pumpSignal.alpha = 1
                     pumpLock = 1
-                    pumpSignal.position.y += 20
+                    pumpSignal.run(SKAction.fadeAlpha(to: 0, duration: 2))
+                    pumpSignal.run(SKAction.moveBy(x: 0, y: 30, duration: 2))
                     run(SKAction.sequence([SKAction.wait(forDuration: 2),SKAction.run {
                         self.pumpSignal.alpha = 0
                         self.pumpLock = 0
-                        self.pumpSignal.position.y -= 20
+                        self.pumpSignal.position.y -= 30
                     }]))
                 }
                 

@@ -11,6 +11,7 @@ import GameplayKit
 var apple = SKSpriteNode(imageNamed: "")
 let bottomB = SKSpriteNode(color: .green, size: CGSize(width: 1334, height: 20))
 let livesNode = SKLabelNode(text: "lives: 3")
+let scoreNode = SKLabelNode(text: "Score: 0")
 var lives = 3
 var score = 0
 let backButton = SKLabelNode(text: "Quit")
@@ -28,11 +29,17 @@ class GameScene: SKScene,
             resetButton.alpha = 0
             addChild(resetButton)
             
-            livesNode.position = CGPoint(x: frame.midX, y: frame.midY)
+            livesNode.position = CGPoint(x: frame.midX, y: frame.maxY - 125)
             livesNode.fontName = "PressStart2P"
             livesNode.text = "lives: \(lives)"
             
             addChild(livesNode)
+            
+            scoreNode.position = CGPoint(x: frame.midX, y: frame.maxY - 200)
+            scoreNode.fontName = "PressStart2P"
+            scoreNode.text = "Score: \(score)"
+            
+            addChild(scoreNode)
             
             backButton.fontName = "PressStart2P"
             backButton.fontSize = 32
@@ -103,8 +110,8 @@ class GameScene: SKScene,
         }else if (SettingsManager.shared.choice == 2){
             firstP = "pumpkin"
             secondP = "pumpkin2nd"
-//            thirdP = "pumpkin3rd"
-//            fourthP = "pumpkin4th"
+            thirdP = "pumpkin3rd"
+            fourthP = "pumpkin4th"
         }
         apple.texture = SKTexture(imageNamed: firstP)
     }
@@ -132,6 +139,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 apple.removeFromParent()
                 bottomB.removeFromParent()
                 resetButton.removeFromParent()
+                scoreNode.removeFromParent()
                 reset()
                 
             }
@@ -147,6 +155,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
         resetButton.alpha = 0
         apple.size = CGSize(width: 60, height: 60)
+        apple.zRotation = 0
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
