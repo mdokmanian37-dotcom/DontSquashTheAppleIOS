@@ -10,7 +10,7 @@ import GameplayKit
 
 var apple = SKSpriteNode(imageNamed: "")
 let bottomB = SKSpriteNode(color: .green, size: CGSize(width: 1334, height: 20))
-let livesNode = SKLabelNode(text: "lives: 3")
+let livesNode = SKLabelNode(text: "Lives: 3")
 let scoreNode = SKLabelNode(text: "Score: 0")
 var lives = 3
 var score = 0
@@ -20,10 +20,27 @@ var firstP = ""
 var secondP = ""
 var thirdP = ""
 var fourthP = ""
+var highScoreG = 0
+let highScoreNode = SKLabelNode(text: "HighScore: 0")
+let highScore = DefaultsManager.loadUserDefaults()
 class GameScene: SKScene,
     SKPhysicsContactDelegate {
         
+    
+    
         override func didMove(to view: SKView) {
+//            let highScore = DefaultsManager.loadUserDefaults()
+//            
+//            highScoreG = highScore
+            
+            highScoreNode.text = "HighScore: \(highScore)"
+            highScoreNode.position = CGPoint(x: frame.maxX - 150, y: frame.maxY - 130)
+            highScoreNode.fontName = "PressStart2P"
+            highScoreNode.fontSize = 32
+            addChild(highScoreNode)
+            
+            
+            
             resetButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
             resetButton.fontName = "PressStart2P"
             resetButton.alpha = 0
@@ -31,7 +48,7 @@ class GameScene: SKScene,
             
             livesNode.position = CGPoint(x: frame.midX, y: frame.maxY - 125)
             livesNode.fontName = "PressStart2P"
-            livesNode.text = "lives: \(lives)"
+            livesNode.text = "Lives: \(lives)"
             
             addChild(livesNode)
             
@@ -149,6 +166,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 bottomB.removeFromParent()
                 resetButton.removeFromParent()
                 scoreNode.removeFromParent()
+                highScoreNode.removeFromParent()
                 reset()
                 
             }
@@ -159,12 +177,20 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     func reset(){
         lives = 3
         apple.texture = SKTexture(imageNamed: firstP)
-        livesNode.text = "lives: \(lives)"
+        livesNode.text = "Lives: \(lives)"
         score = 0
+        scoreNode.text = "Score: \(score)"
         apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
         resetButton.alpha = 0
         apple.size = CGSize(width: 60, height: 60)
         apple.zRotation = 0
+        highScoreNode.text = "HighScore: \(highScore)"
+//        if highScore < score{
+//            DefaultsManager.saveToUserDefaults(highScore: score)
+//            highScoreNode.text = "HighScore: \(score)"
+//            score = 0
+//        }
+        
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -177,7 +203,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             print("apple crushed")
             contact.bodyA.node?.removeFromParent()
             if lives > 0{
-                livesNode.text = "lives: \(lives)"
+                livesNode.text = "Lives: \(lives)"
             }
             
             if lives == 2{
@@ -194,6 +220,9 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 livesNode.text = "Last life!"
             }else if lives < 0{
                 // play animation
+                if score > highScore{
+                    DefaultsManager.saveToUserDefaults(highScore: score)
+                }
                 livesNode.text = "GAME OVER"
                 resetButton.alpha = 1
             }
@@ -203,7 +232,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 print("apple crushed")
                 contact.bodyB.node?.removeFromParent()
                 if lives > 0{
-                    livesNode.text = "lives: \(lives)"
+                    livesNode.text = "Lives: \(lives)"
                 }
                 
                 if lives == 2{
@@ -215,6 +244,10 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                     apple.texture = SKTexture(imageNamed: fourthP)
                     livesNode.text = "Last life!"
                 }else if lives < 0{
+                    if score > highScore{
+                        DefaultsManager.saveToUserDefaults(highScore: score)
+                    }
+                    
                     livesNode.text = "GAME OVER"
                     resetButton.alpha = 1
                 }
