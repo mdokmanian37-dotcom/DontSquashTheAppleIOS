@@ -122,8 +122,12 @@ class GameScene: SKScene,
         apple.size = CGSize(width: 60, height: 60)
         apple.position = CGPoint(x: frame.midX, y: frame.midY+50)
         apple.physicsBody?.restitution = 0
+        apple.physicsBody?.linearDamping = 0
+//        apple.physicsBody?.friction = 0
+        apple.physicsBody?.angularDamping = 0
         apple.physicsBody?.categoryBitMask = 2
         apple.physicsBody?.contactTestBitMask = 8
+        
         
         
         addChild(apple)
@@ -145,8 +149,12 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
             print("touch \(location)")
+//            while location.x > frame.midX{
+//                apple.zRotation -= .pi / 1
+//            }
             if location.x > frame.midX{
                 apple.physicsBody?.velocity = CGVector(dx: 350, dy: 0)
+                                
             }
             if location.x < frame.midX{
                 apple.physicsBody?.velocity = CGVector(dx: -350, dy: 0)

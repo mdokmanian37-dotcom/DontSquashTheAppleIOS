@@ -10,9 +10,10 @@ import GameplayKit
 
 class MainMenuScene: SKScene {
     let title = SKLabelNode(text: "Don't Squash The Apple!")
-    let playButton = SKLabelNode(text: "Play Game")
+    let playButton = SKLabelNode(text: "Dodge Mode")
     let settingsButton = SKLabelNode(text: "Customize")
     let creditsButton = SKLabelNode(text: "Credits")
+    let catchModeButton = SKLabelNode(text: "Catch Mode")
 
     override func didMove(to view: SKView) {
         title.fontName = "PressStartP2"
@@ -22,8 +23,13 @@ class MainMenuScene: SKScene {
         
         playButton.fontSize = 40
         playButton.fontName = "PressStartP2"
-        playButton.position = CGPoint(x: frame.midX, y: frame.midY)
+        playButton.position = CGPoint(x: frame.midX - 120, y: frame.midY)
         addChild(playButton)
+        
+        catchModeButton.fontSize = 40
+        catchModeButton.fontName = "PressStartP2"
+        catchModeButton.position = CGPoint(x: frame.midX + 120, y: frame.midY)
+        addChild(catchModeButton)
         
         settingsButton.fontSize = 40
         settingsButton.fontName = "PressStartP2"
@@ -44,6 +50,11 @@ class MainMenuScene: SKScene {
                     let gameScene = GameScene(size: self.size)
                     gameScene.scaleMode = .aspectFill
                     self.view?.presentScene(gameScene, transition: .doorsOpenHorizontal(withDuration: 0.5))
+                }
+                if catchModeButton.contains(location){
+                    let gameScene = CatchGameScene(size: self.size)
+                    gameScene.scaleMode = .aspectFill
+                    self.view?.presentScene(gameScene, transition: .doorsOpenVertical(withDuration: 0.5))
                 }
                 if settingsButton.contains(location){
                     let gameScene = SettingsScene(size: self.size)
