@@ -54,7 +54,7 @@ class MainMenuScene: SKScene {
                 if catchModeButton.contains(location){
                     let gameScene = CatchGameScene(size: self.size)
                     gameScene.scaleMode = .aspectFill
-                    self.view?.presentScene(gameScene, transition: .doorsOpenVertical(withDuration: 0.5))
+                    self.view?.presentScene(gameScene, transition: .doorsOpenHorizontal(withDuration: 0.5))
                 }
                 if settingsButton.contains(location){
                     let gameScene = SettingsScene(size: self.size)

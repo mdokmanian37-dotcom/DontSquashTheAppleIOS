@@ -61,7 +61,9 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
         basket.physicsBody?.categoryBitMask = 2
         addChild(basket)
         run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {
-            if newLives >= 0 {self.newMakeApple(pos: CGPoint(x: basket.position.x - Double.random(in: -400...400), y: 640))}
+            if newLives >= 0 {
+                self.newMakeApple(pos: CGPoint(x: basket.position.x - Double.random(in: -400...400), y: 640))
+            }
         }])))
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsWorld.contactDelegate = self
@@ -109,10 +111,10 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
             if location.x > frame.midX{
-                basket.physicsBody?.velocity = CGVector(dx: 250, dy: 0)
+                basket.physicsBody?.velocity = CGVector(dx: 350, dy: 0)
             }
             if location.x < frame.midX{
-                basket.physicsBody?.velocity = CGVector(dx: -250, dy: 0)
+                basket.physicsBody?.velocity = CGVector(dx: -350, dy: 0)
             }
             
         }
