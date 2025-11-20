@@ -16,6 +16,7 @@ var newScore = 0
 let newBackButton = SKLabelNode(text: "Quit")
 let basket = SKSpriteNode(imageNamed: "basket")
 let newResetButton = SKLabelNode(text: "Restart")
+var theImage = "apple"
 
 class CatchGameScene: SKScene, SKPhysicsContactDelegate{
     override func didMove(to view: SKView) {
@@ -62,16 +63,43 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
         addChild(basket)
         run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {
             if newLives >= 0 {
-                self.newMakeApple(pos: CGPoint(x: basket.position.x - Double.random(in: -400...400), y: 640))
+//                var random = Int.random(in: 1...4)
+                let random = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5]
+                // apple 60% apple2nd 13% apple3rd 12% apple4th 10% apple5th 5%
+               
+                var theSize: CGSize = CGSize(width: 60, height: 60)
+                
+                switch random.randomElement()!{
+                case 1:
+                    theImage = "apple"
+                    theSize = CGSize(width: 60, height: 60)
+                case 2:
+                    theImage = "apple2nd"
+                    theSize = CGSize(width: 60, height: 60)
+                case 3:
+                    theImage = "apple3rd"
+                    theSize = CGSize(width: 70, height: 60)
+                case 4:
+                    theImage = "apple4th"
+                    theSize = CGSize(width: 80, height: 60)
+                case 5:
+                    theImage = "apple5th"
+                    theSize = CGSize(width: 60,height: 60)
+                default:
+                    theImage = "apple"
+                    theSize = CGSize(width: 60, height: 60)
+                }
+                
+                self.newMakeApple(pos: CGPoint(x: basket.position.x - Double.random(in: -400...400), y: 640), image: theImage, size: theSize)
             }
         }])))
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsWorld.contactDelegate = self
     }
-    func newMakeApple(pos:CGPoint){
-        let newApple = SKSpriteNode(imageNamed: "apple")
+    func newMakeApple(pos:CGPoint, image: String, size: CGSize){
+        let newApple = SKSpriteNode(imageNamed: "\(image)")
         newApple.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 87.5, height: 87.5))
-        newApple.size = CGSize(width: 60, height: 60)
+        newApple.size = size
         newApple.position = pos
         newApple.physicsBody?.categoryBitMask = 8
         newApple.physicsBody?.contactTestBitMask = 2 | 4
@@ -125,12 +153,33 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.categoryBitMask == 2 && contact.bodyB.categoryBitMask == 8{
             contact.bodyB.node?.removeFromParent()
-            newScore += 1
+            if theImage == "apple"{
+                newScore += 1
+            }else if theImage == "apple2nd"{
+                newScore -= 1
+            }else if theImage == "apple3rd"{
+                newScore -= 2
+            }else if theImage == "apple4th"{
+                newScore -= 3
+            }else if theImage == "apple5th"{
+                newScore += 5
+            }
+            
             newScoreNode.text = "Score: \(newScore)"
         }
         if contact.bodyA.categoryBitMask == 8 && contact.bodyB.categoryBitMask == 2{
             contact.bodyA.node?.removeFromParent()
-            newScore += 1
+            if theImage == "apple"{
+                newScore += 1
+            }else if theImage == "apple2nd"{
+                newScore -= 1
+            }else if theImage == "apple3rd"{
+                newScore -= 2
+            }else if theImage == "apple4th"{
+                newScore -= 3
+            }else if theImage == "apple5th"{
+                newScore += 5
+            }
             newScoreNode.text = "Score: \(newScore)"
         }
         if contact.bodyA.categoryBitMask == 4 && contact.bodyB.categoryBitMask == 8{
@@ -159,6 +208,7 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
             newLives -= 1
             if newLives > 0{
                 newLivesNode.text = "Lives: \(newLives)"
+                
             }
             if newLives == 2{
                 
