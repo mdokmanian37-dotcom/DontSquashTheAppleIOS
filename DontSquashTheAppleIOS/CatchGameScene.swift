@@ -64,9 +64,16 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
         run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {
             if newLives >= 0 {
 //                var random = Int.random(in: 1...4)
-                let random = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5]
-                // apple 60% apple2nd 13% apple3rd 12% apple4th 10% apple5th 5%
-               
+                let random = [
+                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                    2,2,2,2,2,
+                    3,3,3,3,3,
+                    4,4,4,
+                    5,5
+                ]
+                
+                // apple 85% apple2nd 5% apple3rd 5% apple4th 3% apple5th 2%
+//                let newRandom = Int.random(in: 1...100)
                 var theSize: CGSize = CGSize(width: 60, height: 60)
                 
                 switch random.randomElement()!{
@@ -164,6 +171,11 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
             }else if theImage == "apple5th"{
                 newScore += 5
             }
+            if newScore < 0{
+                newLivesNode.text = "GAME OVER"
+                newResetButton.alpha = 1
+                newLives = -1
+            }
             
             newScoreNode.text = "Score: \(newScore)"
         }
@@ -181,10 +193,28 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
                 newScore += 5
             }
             newScoreNode.text = "Score: \(newScore)"
+            if newScore < 0{
+                newLivesNode.text = "GAME OVER"
+                newResetButton.alpha = 1
+                newLives = -1
+            }
         }
         if contact.bodyA.categoryBitMask == 4 && contact.bodyB.categoryBitMask == 8{
             contact.bodyB.node?.removeFromParent()
-            newLives -= 1
+            if theImage == "apple"{
+                newLives -= 1
+            }else if theImage == "apple2nd"{
+                
+            }else if theImage == "apple3rd"{
+                
+            }else if theImage == "apple4th"{
+                
+            }else if theImage == "apple5th"{
+                newLives -= 1
+                
+            }
+            
+            
             if newLives > 0{
                 newLivesNode.text = "Lives: \(newLives)"
             }
@@ -205,7 +235,17 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
         }
         if contact.bodyA.categoryBitMask == 8 && contact.bodyB.categoryBitMask == 4{
             contact.bodyA.node?.removeFromParent()
-            newLives -= 1
+            if theImage == "apple"{
+                newLives -= 1
+            }else if theImage == "apple2nd"{
+                
+            }else if theImage == "apple3rd"{
+                
+            }else if theImage == "apple4th"{
+                
+            }else if theImage == "apple5th"{
+                newLives -= 1
+            }
             if newLives > 0{
                 newLivesNode.text = "Lives: \(newLives)"
                 
