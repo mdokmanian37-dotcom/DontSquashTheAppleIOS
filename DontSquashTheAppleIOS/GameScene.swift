@@ -22,7 +22,7 @@ var thirdP = ""
 var fourthP = ""
 var highScoreG = 0
 let highScoreNode = SKLabelNode(text: "HighScore: 0")
-let highScore = DefaultsManager.loadUserDefaults()
+var highScore = DefaultsManager.loadUserDefaults()
 class GameScene: SKScene,
     SKPhysicsContactDelegate {
         
@@ -32,6 +32,8 @@ class GameScene: SKScene,
 //            let highScore = DefaultsManager.loadUserDefaults()
 //            
 //            highScoreG = highScore
+            
+            
             
             highScoreNode.text = "HighScore: \(highScore)"
             highScoreNode.position = CGPoint(x: frame.maxX - 150, y: frame.maxY - 130)
@@ -230,6 +232,9 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 // play animation
                 if score > highScore{
                     DefaultsManager.saveToUserDefaults(highScore: score)
+                    
+                    highScore = DefaultsManager.loadUserDefaults()
+                    highScoreNode.text = "HighScore: \(highScore)"
                 }
                 livesNode.text = "GAME OVER"
                 resetButton.alpha = 1
@@ -254,6 +259,9 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 }else if lives < 0{
                     if score > highScore{
                         DefaultsManager.saveToUserDefaults(highScore: score)
+                        
+                        highScore = DefaultsManager.loadUserDefaults()
+                        highScoreNode.text = "HighScore: \(highScore)"
                     }
                     
                     livesNode.text = "GAME OVER"

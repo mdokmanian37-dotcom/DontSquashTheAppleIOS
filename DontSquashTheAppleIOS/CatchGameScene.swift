@@ -97,7 +97,7 @@ class CatchGameScene: SKScene, SKPhysicsContactDelegate{
                     theSize = CGSize(width: 60, height: 60)
                 }
                 
-                self.newMakeApple(pos: CGPoint(x: basket.position.x - Double.random(in: -400...400), y: 640), image: theImage, size: theSize)
+                self.newMakeApple(pos: CGPoint(x: basket.position.x - Double.random(in: -300...300), y: 640), image: theImage, size: theSize)
             }
         }])))
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
