@@ -23,6 +23,8 @@ var fourthP = ""
 var highScoreG = 0
 let highScoreNode = SKLabelNode(text: "HighScore: 0")
 var highScore = DefaultsManager.loadUserDefaults()
+let bG = SKSpriteNode(imageNamed: "background1")
+var aniLock = 1
 class GameScene: SKScene,
     SKPhysicsContactDelegate {
         
@@ -33,7 +35,29 @@ class GameScene: SKScene,
 //            
 //            highScoreG = highScore
             
+            apple.run(SKAction.sequence([
+                SKAction.run {aniLock = 1},
+                SKAction.run {apple.physicsBody?.pinned = true},
+                SKAction.rotate(toAngle: 20 * (.pi/180), duration: 0.15),
+                SKAction.wait(forDuration: 0.067),
+                SKAction.rotate(toAngle: -40 * (.pi/180), duration: 0.15),
+                SKAction.wait(forDuration: 0.067),
+                SKAction.rotate(toAngle: 20 * (.pi/180), duration: 0.15),
+                SKAction.wait(forDuration: 0.067),
+                SKAction.rotate(toAngle: -40 * (.pi/180), duration: 0.15),
+                SKAction.wait(forDuration: 0.067),
+                SKAction.rotate(toAngle: 0 * (.pi/180), duration: 0.15),
+                SKAction.wait(forDuration: 0.67),
+                SKAction.run {apple.physicsBody?.pinned = false},
+                SKAction.wait(forDuration: 1),
+                SKAction.run{aniLock = 0}
+            ]))
             
+            
+            bG.size = CGSize(width: frame.maxX - 6, height: frame.maxY - 100)
+            bG.position = CGPoint(x: frame.midX, y: frame.midY)
+            bG.zPosition = -1
+            addChild(bG)
             
             highScoreNode.text = "HighScore: \(highScore)"
             highScoreNode.position = CGPoint(x: frame.maxX - 150, y: frame.maxY - 130)
@@ -83,6 +107,7 @@ class GameScene: SKScene,
             bottomB.physicsBody?.allowsRotation = false
             bottomB.physicsBody?.categoryBitMask = 4
             bottomB.physicsBody?.contactTestBitMask = 8
+            bottomB.alpha = 0
             
             
             addChild(bottomB)
@@ -92,7 +117,8 @@ class GameScene: SKScene,
             
             
             run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {
-                if lives >= 0 {self.makeBoulder(pos: CGPoint(x: apple.position.x - Double.random(in: -150...150), y: 640))}
+                if lives >= 0 && aniLock == 0 {
+                    self.makeBoulder(pos: CGPoint(x: apple.position.x - Double.random(in: -150...150), y: 640))}
             }])))
             
             self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
@@ -177,6 +203,7 @@ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
                 resetButton.removeFromParent()
                 scoreNode.removeFromParent()
                 highScoreNode.removeFromParent()
+                bG.removeFromParent()
                 reset()
                 
             }
