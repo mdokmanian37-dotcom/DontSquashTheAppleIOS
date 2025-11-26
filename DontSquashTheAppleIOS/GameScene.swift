@@ -135,12 +135,12 @@ class GameScene: SKScene,
     }
     func makeBoulder(pos:CGPoint){
         let boulder = SKSpriteNode(imageNamed: "boulder")
-        boulder.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 87.5, height: 87.5))
-        boulder.size = CGSize(width: 175, height: 175)
+        boulder.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 80, height: 80))
+        boulder.size = CGSize(width: 80, height: 80)
         boulder.position = pos
         boulder.physicsBody?.categoryBitMask = 8
         boulder.physicsBody?.contactTestBitMask = 2 | 4
-        
+        boulder.zRotation = CGFloat.random(in: 0...2*CGFloat.pi)
         addChild(boulder)
         
     }
